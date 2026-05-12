@@ -1,72 +1,178 @@
 body {
-    background: #f9e8e8;       /* Нежный розовый фон вокруг */
+    /* Более розовый градиент: от нежно-розового к тёплому кораллово-розовому */
+    background: linear-gradient(135deg, #ffdde1 0%, #ffb7c5 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: 'Segoe UI', cursive, sans-serif;
+    font-family: 'Segoe UI', cursive, 'Times New Roman', serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .card {
-    width: 500px;
-    height: 350px;
-    perspective: 1200px;        /* Глубина для 3D-эффекта */
+    width: 550px;
+    height: 420px;
+    perspective: 1200px;
     cursor: pointer;
+    max-width: 90vw;
+    max-height: 70vh;
 }
 
 .card-inner {
     width: 100%;
     height: 100%;
     position: relative;
-    transition: transform 0.6s;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     transform-style: preserve-3d;
-    border-radius: 20px;
-    box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+    border-radius: 24px;
+    box-shadow: 0 25px 35px rgba(0, 0, 0, 0.2);
 }
 
-/* Когда открытка открыта – переворачиваем */
 .card.open .card-inner {
     transform: rotateY(180deg);
 }
 
-/* Общие стили для обеих сторон */
-.card-front, .card-back {
+.card-front,
+.card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;   /* Прячем обратную сторону */
-    border-radius: 20px;
+    backface-visibility: hidden;
+    border-radius: 24px;
     overflow: hidden;
 }
 
-/* Лицевая сторона (картинка) */
 .card-front {
     background: white;
 }
 
-/* Внутренняя сторона – изначально повёрнута */
 .card-back {
-    background: #fff0f0;
+    background: linear-gradient(145deg, #fff5f5 0%, #ffe0e7 100%);
     transform: rotateY(180deg);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 20px 18px;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 3px #ffb6c1, 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.love-message {
     font-size: 32px;
     font-weight: bold;
     color: #d42e5d;
-    box-shadow: inset 0 0 0 2px #ffb6c1;
-    padding: 20px;
-    box-sizing: border-box;
+    margin-bottom: 20px;
+    animation: fadeIn 0.6s ease-out;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
 }
 
-.card-back p {
-    margin: 0;
-    animation: fadeIn 0.8s ease-out;
+.days-counter {
+    background: rgba(255, 245, 245, 0.8);
+    border-radius: 28px;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 320px;
+    margin: 10px 0;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(2px);
 }
 
-/* Лёгкая анимация появления текста */
+.counter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 18px;
+    margin: 12px 0;
+    padding: 4px 0;
+    border-bottom: 1px dashed #ffb7c5;
+}
+
+.counter-item:last-child {
+    border-bottom: none;
+}
+
+.counter-label {
+    font-weight: 600;
+    color: #a13e5a;
+    letter-spacing: 0.3px;
+}
+
+.counter-value {
+    font-weight: 800;
+    font-size: 22px;
+    color: #c2185b;
+    background: #fff0f3;
+    padding: 2px 12px;
+    border-radius: 40px;
+    min-width: 65px;
+    text-align: center;
+    font-family: monospace;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.heart-note {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #e46d8f;
+    font-style: italic;
+    background: rgba(255,255,240,0.7);
+    padding: 6px 12px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+}
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        width: 90vw;
+        height: auto;
+        min-height: 480px;
+    }
+    
+    .card-back {
+        padding: 15px;
+    }
+    
+    .love-message {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+    
+    .counter-item {
+        font-size: 15px;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+    }
+    
+    .counter-label {
+        font-size: 14px;
+    }
+    
+    .counter-value {
+        font-size: 18px;
+        min-width: 55px;
+    }
+    
+    .days-counter {
+        padding: 10px 12px;
+    }
+}
+
+.card:hover .card-inner {
+    box-shadow: 0 30px 40px rgba(0, 0, 0, 0.25);
 }
