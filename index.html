@@ -2,28 +2,80 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Открытка с любовью</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Открытка с любовью — счётчик дней</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="card" id="card">
         <div class="card-inner">
             <div class="card-front">
-                <!-- Лицевая сторона: просто красивая открытка -->
                 <img src="fon.jpg" alt="Открытка" style="width:100%; height:100%; object-fit: cover;">
             </div>
             <div class="card-back">
-                <!-- Внутренняя сторона: надпись -->
-                <p>🌹 Я тебя люблю! 🌹</p>
+                <div class="love-message">🌹 Я тебя люблю! 🌹</div>
+                
+                <div class="days-counter">
+                    <div class="counter-item">
+                        <span class="counter-label">💞 Дней в отношениях:</span>
+                        <span class="counter-value" id="daysTogether">—</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">💋 Дней с первого поцелуя:</span>
+                        <span class="counter-value" id="daysSinceKiss">—</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">🌹 Дней с первой встречи:</span>
+                        <span class="counter-value" id="daysSinceFirstMeeting">—</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">✨ Дней с знакомства:</span>
+                        <span class="counter-value" id="daysSinceAcquaintance">—</span>
+                    </div>
+                </div>
+                <div class="heart-note">💖 Каждый день с тобой — подарок 💖</div>
             </div>
         </div>
     </div>
 
     <script>
-        // JavaScript добавим прямо здесь для простоты
+        // ------------------- НАСТРОЙКИ ДАТ (ИЗМЕНИТЕ НА СВОИ!) -------------------
+        const START_RELATION = new Date(2023, 2, 20);    // 20 марта 2023
+        const FIRST_KISS     = new Date(2023, 2, 10);    // 10 марта 2023
+        const FIRST_MEETING  = new Date(2023, 1, 1);     // 1 февраля 2023
+        const ACQUAINTANCE   = new Date(2023, 0, 15);    // 15 января 2023
+        // ------------------------------------------------------------------------
+
+        function daysBetween(date1, date2) {
+            const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+            const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+            const diffTime = Math.abs(d2 - d1);
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function updateCounters() {
+            const today = new Date();
+            const todayNorm = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+            document.getElementById('daysTogether').textContent = daysBetween(START_RELATION, todayNorm);
+            document.getElementById('daysSinceKiss').textContent = daysBetween(FIRST_KISS, todayNorm);
+            document.getElementById('daysSinceFirstMeeting').textContent = daysBetween(FIRST_MEETING, todayNorm);
+            document.getElementById('daysSinceAcquaintance').textContent = daysBetween(ACQUAINTANCE, todayNorm);
+        }
+
+        // Первоначальный расчёт (на всякий случай, если открытка сразу открыта)
+        updateCounters();
+
         const card = document.getElementById('card');
         card.addEventListener('click', () => {
+            // Переворачиваем открытку
             card.classList.toggle('open');
+            
+            // Если после переворота открытка стала открыта (добавился класс open)
+            if (card.classList.contains('open')) {
+                // Обновляем счётчики — теперь они покажут актуальные дни на момент открытия
+                updateCounters();
+            }
         });
     </script>
 </body>
